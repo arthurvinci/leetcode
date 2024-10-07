@@ -1,7 +1,7 @@
 use std::cmp::max;
 use std::collections::HashMap;
 
-pub struct Solution{}
+struct Solution{}
 
 
 impl Solution {

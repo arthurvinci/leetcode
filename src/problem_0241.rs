@@ -1,4 +1,4 @@
-pub struct Solution {}
+struct Solution {}
 
 pub enum Token{
     Add,
