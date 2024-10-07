@@ -32,7 +32,7 @@ impl Solution {
 
 #[cfg(test)]
 mod tests{
-    use crate::exo3::Solution;
+    use crate::problem_0003::Solution;
 
     #[test]
     fn test_1(){

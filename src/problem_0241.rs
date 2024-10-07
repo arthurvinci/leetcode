@@ -44,7 +44,7 @@ impl Token{
             }
         }
 
-        if current_str.len() > 0 {
+        if !current_str.is_empty() {
             nodes.push(Token::Number(str::parse(&current_str).unwrap()));
         }
 
@@ -52,10 +52,7 @@ impl Token{
     }
 
     pub fn is_operator(&self) -> bool {
-        match self {
-            Token::Number(_) => false,
-            _ => true
-        }
+        !matches!(self, Token::Number(_))
     }
 
     pub fn apply_opp(&self, lhs: i32, rhs: i32) -> i32 {
@@ -79,7 +76,7 @@ impl Solution {
         if tokens.is_empty() {
             vec![0]
         } else if tokens.len() == 1 {
-            match tokens.get(0).unwrap() {
+            match tokens.first().unwrap() {
                 Token::Number(nb) => vec![*nb],
                 _ => panic!("Parsing error!")
             }
@@ -104,7 +101,7 @@ impl Solution {
 
 #[cfg(test)]
 mod test {
-    use crate::exo241::Solution;
+    use crate::problem_0241::Solution;
 
     #[test]
     fn test_1() {

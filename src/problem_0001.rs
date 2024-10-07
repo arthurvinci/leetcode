@@ -28,7 +28,7 @@ impl Solution {
 
 #[cfg(test)]
 mod test{
-    use crate::exo1::Solution;
+    use crate::problem_0001::Solution;
 
     #[test]
     fn test_2(){
