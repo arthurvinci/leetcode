@@ -1,33 +1,41 @@
-/*
-pub enum Node{
+pub struct Solution {}
+
+pub enum Token{
     Add,
     Mul,
     Sub,
+    Div,
     Number(i32)
 }
 
-impl Node{
-    pub fn nodes_from(expression: String) -> Vec<Node>{
+
+impl Token{
+    pub fn from(input_string: String) -> Vec<Self> {
         let mut nodes = vec![];
         let mut current_str = "".to_string();
 
-        for char in expression.chars() {
+        for char in input_string.chars() {
             match char{
                 '-' => {
-                    nodes.push(Node::Number(str::parse(&current_str).unwrap()));
-                    nodes.push(Node::Sub);
+                    nodes.push(Token::Number(str::parse(&current_str).unwrap()));
+                    nodes.push(Token::Sub);
                     current_str = "".to_string();
                 }
 
                 '+' =>{
-                    nodes.push(Node::Number(str::parse(&current_str).unwrap()));
-                    nodes.push(Node::Add);
+                    nodes.push(Token::Number(str::parse(&current_str).unwrap()));
+                    nodes.push(Token::Add);
                     current_str = "".to_string();
                 }
 
                 '*'=> {
-                    nodes.push(Node::Number(str::parse(&current_str).unwrap()));
-                    nodes.push(Node::Mul);
+                    nodes.push(Token::Number(str::parse(&current_str).unwrap()));
+                    nodes.push(Token::Mul);
+                    current_str = "".to_string();
+                }
+                '/' => {
+                    nodes.push(Token::Number(str::parse(&current_str).unwrap()));
+                    nodes.push(Token::Div);
                     current_str = "".to_string();
                 }
                 _ =>{
@@ -37,149 +45,78 @@ impl Node{
         }
 
         if current_str.len() > 0 {
-            nodes.push(Node::Number(str::parse(&current_str).unwrap()));
+            nodes.push(Token::Number(str::parse(&current_str).unwrap()));
         }
 
         nodes
     }
-}
 
-pub struct Tree{
-    pub node: Node,
-    pub left_tree: Option<Tree>,
-    pub right_tree: Option<Tree>
-}
-
-impl Tree{
-
-    pub fn build_from(expression: String) -> Self{
-        let mut nodes = Node::nodes_from(expression);
-        let mut last_node = nodes.pop();
-
-        let mut start_tree = match last_node {
-            None => { panic!() }
-            Some(node) => {
-                Tree{
-                    node: node,
-                    left_tree: None,
-                    right_tree: None
-                }
-            }
-        };
-
-        Self::add_nodes(&mut start_tree, nodes);
-
-        start_tree
-    }
-
-    pub fn all_ways_to_add(&self) -> Vec<i32> {
-
-    }
-
-    fn add_nodes(tree: &mut Tree, mut nodes: Vec<Node>) {
-        match nodes.pop(){
-            None => {}
-            Some(node) => {
-                let mut new_tree = Tree{
-                    node: node,
-                    left_tree: None,
-                    right_tree: None
-                };
-
-                Self::add_nodes(&mut new_tree, nodes);
-
-                tree.right_tree = Some(new_tree);
-            }
+    pub fn is_operator(&self) -> bool {
+        match self {
+            Token::Number(_) => false,
+            _ => true
         }
     }
 
+    pub fn apply_opp(&self, lhs: i32, rhs: i32) -> i32 {
+        match self {
+            Token::Add => lhs + rhs,
+            Token::Div => lhs / rhs,
+            Token::Mul => lhs * rhs,
+            Token::Sub => lhs - rhs,
+            Token::Number(_) => panic!("This token is not an operator!")
+        }
+    }
 }
 
-
-pub fn diff_ways_to_compute(expression: String) -> Vec<i32> {
-    if expression.len() == 0{
-        return vec![0]
+impl Solution {
+    pub fn diff_ways_to_compute(expression: String) -> Vec<i32>{
+        let tokens = Token::from(expression);
+        Self::diff_ways_to_compute_tokens(&tokens)
     }
 
-    if expression.len() == 1 {
-        return vec![str::parse::<i32>(&expression).unwrap()];
-    }
-
-    let mut sub_expressions: Vec<String> = split(expression);
-
-    let mut result: Vec<i32> = vec![];
-    let mut current_eval = 0;
-    let mut last_char = "".to_string();
-
-    loop {
-        let current_word = sub_expressions.pop();
-        match current_word{
-            None => {
-                return result
+    pub fn diff_ways_to_compute_tokens(tokens: &[Token]) -> Vec<i32> {
+        if tokens.is_empty() {
+            vec![0]
+        } else if tokens.len() == 1 {
+            match tokens.get(0).unwrap() {
+                Token::Number(nb) => vec![*nb],
+                _ => panic!("Parsing error!")
             }
-            Some(new_word) => {
-                match new_word.as_str() {
-                    "-" | "+" | "*" => {
-                        let other_computes = diff_ways_to_compute(to_string(&sub_expressions));
-                        for other in other_computes{
-                            result.push(to_op(&new_word, other, current_eval));
+        } else {
+            let mut values: Vec<i32> = vec![];
+            for (index, token) in tokens.iter().enumerate() {
+                if token.is_operator(){
+                    let left_values = Self::diff_ways_to_compute_tokens( &tokens[0..index]);
+                    let right_values = Self::diff_ways_to_compute_tokens(&tokens[index+1..]);
+                    for lhs in left_values {
+                        for rhs in &right_values {
+                            values.push(token.apply_opp(lhs, *rhs))
                         }
-                        last_char = new_word;
-                    }
-                    _ => {
-                        let nb = str::parse::<i32>(&new_word).unwrap();
-                        current_eval = to_op(&last_char, nb, current_eval);
                     }
                 }
             }
+
+            values
         }
     }
 }
-
-fn to_op(op: &str, lval: i32, rval: i32) -> i32 {
-    match op {
-        "-" => {
-            return lval - rval;
-        }
-        "+" => {
-            return lval + rval;
-        }
-        "*" => {
-            return lval * rval;
-        }
-
-        "" =>{
-            return lval
-        }
-
-        _ =>{
-            panic!("Not possible")
-        }
-    }
-}
-fn to_string(expr: &Vec<String>) -> String{
-    let mut new_string = String::new();
-    for exp in expr{
-        new_string.push_str(exp);
-    }
-
-    new_string
-}
-
 
 #[cfg(test)]
 mod test {
-    use crate::exo241::diff_ways_to_compute;
+    use crate::exo241::Solution;
 
     #[test]
     fn test_1() {
-        let ok = diff_ways_to_compute("2-1-1".to_string());
+        let mut ok = Solution::diff_ways_to_compute("2-1-1".to_string());
+        ok.sort();
         assert_eq!(ok, vec![0,2])
     }
 
     #[test]
     fn test_2() {
-        let ok = diff_ways_to_compute("2*3-4*5".to_string());
+        let mut ok = Solution::diff_ways_to_compute("2*3-4*5".to_string());
+        ok.sort();
         assert_eq!(ok, vec![-34,-14,-10,-10,10])
     }
-}*/
+}
