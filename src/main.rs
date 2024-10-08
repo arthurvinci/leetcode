@@ -6,6 +6,7 @@ mod problem_1813;
 mod problem_2696;
 mod problem_0567;
 mod problem_1963;
+mod problem_2373;
 
 fn main() {
     println!("Hello, world!");
