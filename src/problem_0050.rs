@@ -5,25 +5,25 @@ impl Solution {
         Self::intern_pow(x, n as i64)
     }
 
-    fn intern_pow(x: f64, n: i64) -> f64{
-        if n == 0{
-            return 1.0
+    fn intern_pow(x: f64, n: i64) -> f64 {
+        if n == 0 {
+            return 1.0;
         }
 
-        if n == 1{
-            return x
+        if n == 1 {
+            return x;
         }
 
         if n < 0 {
             let inverse = Self::intern_pow(x, -n);
-            return 1.0/inverse;
+            return 1.0 / inverse;
         }
 
-        let mut ret = Self::intern_pow(x, n/2);
-        ret = ret*ret;
+        let mut ret = Self::intern_pow(x, n / 2);
+        ret = ret * ret;
 
-        if n%2 == 1{
-            ret = ret * x;
+        if n % 2 == 1 {
+            ret *= x;
         }
 
         ret
@@ -31,11 +31,11 @@ impl Solution {
 }
 
 #[cfg(test)]
-mod tests{
+mod tests {
     use crate::problem_0050::Solution;
 
     #[test]
-    fn test_1(){
+    fn test_1() {
         let res = Solution::my_pow(1.0, -2147483648);
         assert_eq!(res, 1.0);
     }

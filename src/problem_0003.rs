@@ -1,8 +1,7 @@
 use std::cmp::max;
 use std::collections::HashMap;
 
-struct Solution{}
-
+struct Solution {}
 
 impl Solution {
     pub fn length_of_longest_substring(s: String) -> i32 {
@@ -11,8 +10,8 @@ impl Solution {
         let mut start_index = 0;
         let mut stop_index = 0;
 
-        for c in s.chars(){
-            match last_encounter.insert(c, stop_index){
+        for c in s.chars() {
+            match last_encounter.insert(c, stop_index) {
                 None => {}
                 Some(past_index) => {
                     if past_index >= start_index {
@@ -31,17 +30,17 @@ impl Solution {
 }
 
 #[cfg(test)]
-mod tests{
+mod tests {
     use crate::problem_0003::Solution;
 
     #[test]
-    fn test_1(){
+    fn test_1() {
         let ok = Solution::length_of_longest_substring("aab".to_string());
         assert_eq!(ok, 2)
     }
 
     #[test]
-    fn test_2(){
+    fn test_2() {
         let ok = Solution::length_of_longest_substring("cdd".to_string());
         assert_eq!(ok, 2)
     }
@@ -58,4 +57,3 @@ mod tests{
         assert_eq!(ok, 2)
     }
 }
-

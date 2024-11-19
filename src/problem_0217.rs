@@ -8,7 +8,7 @@ impl Solution {
 
         for num in nums {
             if !set.insert(num) {
-                return true
+                return true;
             }
         }
 
@@ -16,26 +16,25 @@ impl Solution {
     }
 }
 
-
 #[cfg(test)]
-mod tests{
+mod tests {
     use crate::problem_0217::Solution;
 
     #[test]
-    fn test_1(){
-        let ok = Solution::contains_duplicate(vec![1,2,3,1]);
+    fn test_1() {
+        let ok = Solution::contains_duplicate(vec![1, 2, 3, 1]);
         assert!(ok)
     }
 
     #[test]
-    fn test_2(){
-        let ok = Solution::contains_duplicate(vec![1,2,3,4]);
+    fn test_2() {
+        let ok = Solution::contains_duplicate(vec![1, 2, 3, 4]);
         assert!(!ok)
     }
 
     #[test]
     fn test_3() {
-        let ok = Solution::contains_duplicate(vec![1,1,1,3,3,4,3,2,4,2]);
+        let ok = Solution::contains_duplicate(vec![1, 1, 1, 3, 3, 4, 3, 2, 4, 2]);
         assert!(ok)
     }
 }

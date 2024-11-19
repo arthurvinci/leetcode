@@ -9,8 +9,8 @@ impl Solution {
         let mut right_index = chars.len() - 1;
 
         while left_index < right_index {
-            if chars[left_index] != chars[right_index]{
-                return false
+            if chars[left_index] != chars[right_index] {
+                return false;
             }
 
             left_index += 1;

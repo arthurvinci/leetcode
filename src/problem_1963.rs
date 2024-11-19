@@ -6,16 +6,13 @@ impl Solution {
 
         for char in s.chars() {
             if char == '[' {
-                counter+=1
-            }
-            else{
-                if counter > 0 {
-                    counter -= 1;
-                }
+                counter += 1
+            } else if counter > 0 {
+                counter -= 1;
             }
         }
 
-        (counter+1)/2
+        (counter + 1) / 2
     }
 }
 

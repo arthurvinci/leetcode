@@ -1,18 +1,17 @@
-struct Solution{}
+struct Solution {}
 
 impl Solution {
     pub fn min_length(s: String) -> i32 {
-        if s.is_empty(){
+        if s.is_empty() {
             0
-        }
-        else{
+        } else {
             let mut new_s = s.clone();
-            loop{
+            loop {
                 let s_length = new_s.len();
                 new_s = new_s.split("AB").map(String::from).collect();
                 new_s = new_s.split("CD").map(String::from).collect();
 
-                if s_length == new_s.len(){
+                if s_length == new_s.len() {
                     break;
                 }
             }
@@ -20,7 +19,6 @@ impl Solution {
         }
     }
 }
-
 
 #[cfg(test)]
 mod test {
