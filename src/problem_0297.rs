@@ -1,35 +1,40 @@
 #[derive(Debug, PartialEq, Eq, Clone)]
- pub struct TreeNode {
-   pub val: i32,
-   pub left: Option<Rc<RefCell<TreeNode>>>,
-   pub right: Option<Rc<RefCell<TreeNode>>>,
- }
+pub struct TreeNode {
+    pub val: i32,
+    pub left: Option<Rc<RefCell<TreeNode>>>,
+    pub right: Option<Rc<RefCell<TreeNode>>>,
+}
 
- impl TreeNode {
-   #[inline]
-   pub fn new(val: i32) -> Self {
-     TreeNode {
-       val,
-       left: None,
-       right: None
-     }
-   }
- }
-use std::rc::Rc;
+impl TreeNode {
+    #[inline]
+    pub fn new(val: i32) -> Self {
+        TreeNode {
+            val,
+            left: None,
+            right: None,
+        }
+    }
+}
 use std::cell::RefCell;
+use std::rc::Rc;
 struct Codec {}
 
 impl Codec {
     fn new() -> Self {
-        Self{}
+        Self {}
     }
 
     fn serialize(&self, root: Option<Rc<RefCell<TreeNode>>>) -> String {
         match root {
             None => "X".to_string(),
-            Some(internal_root) =>{
+            Some(internal_root) => {
                 let node = internal_root.borrow();
-                format!("{};{};{}", node.val, self.serialize(node.left.clone()), self.serialize(node.right.clone()))
+                format!(
+                    "{};{};{}",
+                    node.val,
+                    self.serialize(node.left.clone()),
+                    self.serialize(node.right.clone())
+                )
             }
         }
     }
@@ -40,9 +45,16 @@ impl Codec {
         self.internal_deserialize(&array, &mut index)
     }
 
-    fn internal_deserialize(&self, nodes: &[&str], index: &mut usize) -> Option<Rc<RefCell<TreeNode>>> {
-        match nodes[*index]{
-            "X" => { *index += 1; None },
+    fn internal_deserialize(
+        &self,
+        nodes: &[&str],
+        index: &mut usize,
+    ) -> Option<Rc<RefCell<TreeNode>>> {
+        match nodes[*index] {
+            "X" => {
+                *index += 1;
+                None
+            }
             value => {
                 *index += 1;
                 let mut node = TreeNode::new(value.parse::<i32>().unwrap());
@@ -52,22 +64,21 @@ impl Codec {
             }
         }
     }
-
-
 }
 
 #[cfg(test)]
 mod tests {
-    use std::cell::{RefCell};
-    use std::rc::Rc;
     use crate::problem_0297::{Codec, TreeNode};
+    use std::cell::RefCell;
+    use std::rc::Rc;
 
     #[test]
-    fn test_1(){
+    fn test_1() {
         let nodes_value = vec![1, 2, 3, 4];
-        let mut nodes: Vec<TreeNode> = nodes_value.iter().map(|value| {
-            TreeNode::new(value.clone())
-        }).collect();
+        let mut nodes: Vec<TreeNode> = nodes_value
+            .iter()
+            .map(|value| TreeNode::new(value.clone()))
+            .collect();
 
         nodes[0].right = Some(Rc::new(RefCell::new(nodes[2].clone())));
 

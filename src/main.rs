@@ -20,6 +20,8 @@ mod problem_0200;
 mod problem_0202;
 mod problem_0217;
 mod problem_0241;
+mod problem_0297;
+mod problem_0543;
 mod problem_0567;
 mod problem_1813;
 mod problem_1963;
@@ -27,7 +29,9 @@ mod problem_2070;
 mod problem_2373;
 mod problem_2461;
 mod problem_2696;
-mod problem_0297;
+mod problem_2516;
+mod problem_0219;
+mod problem_0209;
 
 fn main() {
     println!("Hello, world!");
