@@ -1,27 +1,26 @@
 use std::collections::HashMap;
 
-struct LRUCacheNode{
+struct LRUCacheNode {
     key: i32,
     value: i32,
     prev_key: Option<i32>,
-    next_key: Option<i32>
+    next_key: Option<i32>,
 }
 
 struct LRUCache {
     capacity: usize,
     starting_node: Option<i32>,
     ending_node: Option<i32>,
-    elements: HashMap<i32, LRUCacheNode>
+    elements: HashMap<i32, LRUCacheNode>,
 }
 
 impl LRUCache {
-
     fn new(capacity: i32) -> Self {
-        Self{
+        Self {
             capacity: capacity as usize,
             starting_node: None,
             ending_node: None,
-            elements: HashMap::new()
+            elements: HashMap::new(),
         }
     }
 
@@ -37,17 +36,17 @@ impl LRUCache {
                 previous_node = node.prev_key;
                 next_node = node.next_key;
 
-                if self.starting_node != Some(key){
+                if self.starting_node != Some(key) {
                     previous_starting_node = self.starting_node;
                 }
 
                 if let Some(ending_node) = self.ending_node {
-                    if ending_node == key && previous_node.is_some(){
+                    if ending_node == key && previous_node.is_some() {
                         self.ending_node = node.prev_key;
                     }
                 }
 
-                if node.next_key.is_some(){
+                if node.next_key.is_some() {
                     node.next_key = self.starting_node;
                 }
                 node.prev_key = None;
@@ -64,12 +63,10 @@ impl LRUCache {
             node.prev_key = Some(key)
         }
 
-
         node_value
     }
 
-    fn update_previous_and_next(&mut self, previous_node: Option<i32>, next_node: Option<i32>){
-
+    fn update_previous_and_next(&mut self, previous_node: Option<i32>, next_node: Option<i32>) {
         if previous_node.is_some() {
             let node = self.elements.get_mut(&previous_node.unwrap()).unwrap();
             node.next_key = next_node;
@@ -79,11 +76,9 @@ impl LRUCache {
                 node.prev_key = previous_node;
             }
         }
-
     }
 
     fn put(&mut self, key: i32, value: i32) {
-
         let mut previous_node = None;
         let mut next_node = None;
 
@@ -91,23 +86,21 @@ impl LRUCache {
             node.value = value;
             previous_node = node.prev_key;
             next_node = node.next_key;
-            if node.prev_key.is_some(){
+            if node.prev_key.is_some() {
                 self.ending_node = node.prev_key;
             }
-        }
-        else {
+        } else {
             let lru_node = LRUCacheNode {
                 key,
                 value,
                 prev_key: None,
-                next_key: self.starting_node
+                next_key: self.starting_node,
             };
 
             self.elements.insert(key, lru_node);
         }
 
         self.update_previous_and_next(previous_node, next_node);
-
 
         if let Some(starting_node) = self.starting_node {
             let elem = self.elements.get_mut(&starting_node).unwrap();
@@ -116,7 +109,7 @@ impl LRUCache {
 
         self.starting_node = Some(key);
 
-        if self.elements.len() == 1{
+        if self.elements.len() == 1 {
             self.ending_node = Some(key);
         }
 
@@ -124,17 +117,13 @@ impl LRUCache {
             let last_node = self.elements.remove(&self.ending_node.unwrap());
             self.ending_node = last_node.unwrap().prev_key;
 
-            if let Some(end_node) = self.ending_node{
+            if let Some(end_node) = self.ending_node {
                 let node = self.elements.get_mut(&end_node).unwrap();
                 node.next_key = None;
             }
-
         }
-
-
     }
 }
-
 
 #[cfg(test)]
 mod tests {
@@ -143,12 +132,12 @@ mod tests {
     #[test]
     fn test_1() {
         let mut cache = LRUCache::new(2);
-        cache.put(1,1);
-        cache.put(2,2);
+        cache.put(1, 1);
+        cache.put(2, 2);
         cache.get(1);
-        cache.put(3,3);
+        cache.put(3, 3);
         cache.get(2);
-        cache.put(4,4);
+        cache.put(4, 4);
         cache.get(1);
         cache.get(3);
         cache.get(4);
@@ -157,9 +146,9 @@ mod tests {
     #[test]
     fn test_2() {
         let mut cache = LRUCache::new(1);
-        cache.put(2,1);
+        cache.put(2, 1);
         cache.get(2);
-        cache.put(3,2);
+        cache.put(3, 2);
         cache.get(2);
         cache.get(3);
     }
@@ -167,10 +156,10 @@ mod tests {
     #[test]
     fn test_3() {
         let mut cache = LRUCache::new(2);
-        cache.put(2,1);
-        cache.put(1,1);
-        cache.put(2,3);
-        cache.put(4,1);
+        cache.put(2, 1);
+        cache.put(1, 1);
+        cache.put(2, 3);
+        cache.put(4, 1);
         cache.get(1);
         cache.get(2);
     }
@@ -178,14 +167,13 @@ mod tests {
     #[test]
     fn test_4() {
         let mut cache = LRUCache::new(2);
-        cache.put(2,1);
-        cache.put(3,2);
+        cache.put(2, 1);
+        cache.put(3, 2);
         cache.get(3);
         cache.get(2);
-        cache.put(4,3);
+        cache.put(4, 3);
         cache.get(2);
         cache.get(3);
         cache.get(4);
     }
-
 }

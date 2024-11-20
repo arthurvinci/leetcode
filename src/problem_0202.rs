@@ -6,15 +6,15 @@ impl Solution {
     pub fn is_happy(n: i32) -> bool {
         let mut already_visited = HashSet::new();
         let mut computed_value = n as u32;
-        loop{
+        loop {
             if computed_value == 1 {
                 return true;
             }
 
-            if !already_visited.insert(computed_value){
+            if !already_visited.insert(computed_value) {
                 return false;
             }
-             computed_value = Self::compute_value(computed_value);
+            computed_value = Self::compute_value(computed_value);
         }
     }
 
@@ -23,7 +23,7 @@ impl Solution {
         let mut sum = 0;
         for ch in ns {
             let nb = ch.to_digit(10).unwrap();
-           sum += nb*nb
+            sum += nb * nb
         }
         sum
     }
