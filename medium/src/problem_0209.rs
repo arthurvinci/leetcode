@@ -9,18 +9,16 @@ impl Solution {
         for r_pointer in 0..nums.len() {
             current_sum += nums[r_pointer];
 
-            while current_sum >= target && l_pointer <= r_pointer{
-                minimum_length = minimum_length.min(1+(r_pointer - l_pointer) as i32);
+            while current_sum >= target && l_pointer <= r_pointer {
+                minimum_length = minimum_length.min(1 + (r_pointer - l_pointer) as i32);
                 current_sum -= nums[l_pointer];
                 l_pointer += 1;
             }
         }
 
-
         if minimum_length == nums.len() as i32 + 1 {
             0
-        }
-        else {
+        } else {
             minimum_length
         }
     }
@@ -32,9 +30,6 @@ mod tests {
 
     #[test]
     fn test_1() {
-        assert_eq!(
-            Solution::min_sub_array_len(11, vec![1,2,3,4,5]),
-            3
-        )
+        assert_eq!(Solution::min_sub_array_len(11, vec![1, 2, 3, 4, 5]), 3)
     }
 }

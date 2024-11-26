@@ -9,15 +9,11 @@ impl Solution {
 
         let mut champion = None;
 
-        for (vertex, is_champion) in has_in_degree.iter().enumerate(){
-            if *is_champion{
+        for (vertex, is_champion) in has_in_degree.iter().enumerate() {
+            if *is_champion {
                 match champion {
-                    None => {
-                        champion = Some(vertex as i32)
-                    }
-                    Some(_) => {
-                        return -1
-                    }
+                    None => champion = Some(vertex as i32),
+                    Some(_) => return -1,
                 }
             }
         }

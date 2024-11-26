@@ -1,4 +1,4 @@
-use std::collections::{HashSet};
+use std::collections::HashSet;
 
 struct Solution;
 
@@ -19,15 +19,12 @@ impl Solution {
     }
 }
 
-
 #[cfg(test)]
 mod tests {
     use crate::problem_0219::Solution;
 
     #[test]
     fn test_1() {
-        assert!(
-            !Solution::contains_nearby_duplicate(vec![1,2,1], 0)
-        )
+        assert!(!Solution::contains_nearby_duplicate(vec![1, 2, 1], 0))
     }
 }
