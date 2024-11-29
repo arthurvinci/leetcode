@@ -40,7 +40,7 @@ impl Codec {
     }
 
     fn deserialize(&self, data: String) -> Option<Rc<RefCell<TreeNode>>> {
-        let array: Vec<&str> = data.split(";").collect();
+        let array: Vec<&str> = data.split(';').collect();
         let mut index = 0;
         self.internal_deserialize(&array, &mut index)
     }

@@ -40,9 +40,7 @@ impl Config {
                 let up_index = index % 3;
                 let down_index = up_index + 3;
                 let mut new_board = self.board;
-                let tmp_up = new_board[up_index];
-                new_board[up_index] = new_board[down_index];
-                new_board[down_index] = tmp_up;
+                new_board.swap(up_index, down_index);
 
                 new_configs.push(Self { board: new_board })
             }

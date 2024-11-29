@@ -1,4 +1,3 @@
-
 #[derive(PartialEq, Eq, Clone, Debug)]
 pub struct ListNode {
     pub val: i32,
@@ -15,7 +14,7 @@ impl ListNode {
 struct Solution;
 impl Solution {
     pub fn merge_k_lists(mut lists: Vec<Option<Box<ListNode>>>) -> Option<Box<ListNode>> {
-        if lists.len() == 0 {
+        if lists.is_empty() {
             None
         } else if lists.len() == 1 {
             lists[0].clone()
