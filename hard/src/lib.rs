@@ -6,3 +6,4 @@ mod problem_0084;
 mod problem_0297;
 mod problem_0773;
 mod problem_2290;
+mod problem_2577;
