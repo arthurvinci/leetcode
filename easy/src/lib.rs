@@ -1,13 +1,16 @@
 #![allow(dead_code)]
 mod problem_0001;
 mod problem_0009;
+mod problem_0013;
 mod problem_0020;
 mod problem_0021;
 mod problem_0026;
 mod problem_0027;
 mod problem_0035;
+mod problem_0058;
 mod problem_0066;
 mod problem_0070;
+mod problem_0088;
 mod problem_0100;
 mod problem_0112;
 mod problem_0121;
