@@ -7,15 +7,15 @@ impl Solution {
         let mut i = 0;
         loop {
             d[i] = (n % 10) as u8;
-            n = n / 10;
+            n /= 10;
             i += 1;
             if n == 0 {
                 break;
             }
         }
-        for j in 0..i {
+        for digit in d.iter().take(i) {
             if let Some(k) = n.checked_mul(10) {
-                if let Some(l) = k.checked_add(d[j] as i32) {
+                if let Some(l) = k.checked_add(*digit as i32) {
                     n = l;
                     continue;
                 }

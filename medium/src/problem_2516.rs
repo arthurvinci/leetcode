@@ -23,8 +23,8 @@ impl Solution {
             for (right_pointer, ch) in s_chars.iter().enumerate() {
                 Self::count(*ch, &mut a_outside, &mut b_outside, &mut c_outside, -1);
 
-                while left_pointer <= right_pointer
-                    && (c_outside < k || b_outside < k || c_outside < k)
+                while !(left_pointer > right_pointer
+                    || a_outside >= k && c_outside >= k && b_outside >= k)
                 {
                     Self::count(
                         s_chars[left_pointer],

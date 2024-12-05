@@ -1,7 +1,7 @@
 struct Solution;
 
 impl Solution {
-    pub fn remove_duplicates(nums: &mut Vec<i32>) -> i32 {
+    pub fn remove_duplicates(nums: &mut [i32]) -> i32 {
         let mut k = 0;
         let mut last_seen = -1004;
         let mut swaps = vec![];

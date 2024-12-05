@@ -1,129 +1,114 @@
 use std::collections::HashMap;
 
+struct LRUCache {
+    map: HashMap<i32, LRUCacheNode>,
+    head: Option<i32>,
+    tail: Option<i32>,
+    capacity: usize,
+}
+
+#[derive(Clone)]
 struct LRUCacheNode {
     key: i32,
     value: i32,
-    prev_key: Option<i32>,
-    next_key: Option<i32>,
+    prev: Option<i32>,
+    next: Option<i32>,
 }
 
-struct LRUCache {
-    capacity: usize,
-    starting_node: Option<i32>,
-    ending_node: Option<i32>,
-    elements: HashMap<i32, LRUCacheNode>,
+impl LRUCacheNode {
+    fn new(key: i32, value: i32) -> Self {
+        Self {
+            key,
+            value,
+            prev: None,
+            next: None,
+        }
+    }
 }
 
+/**
+ * `&self` means the method takes an immutable reference.
+ * If you need a mutable reference, change it to `&mut self` instead.
+ */
 impl LRUCache {
     fn new(capacity: i32) -> Self {
         Self {
+            map: HashMap::new(),
+            head: None,
+            tail: None,
             capacity: capacity as usize,
-            starting_node: None,
-            ending_node: None,
-            elements: HashMap::new(),
         }
     }
 
     fn get(&mut self, key: i32) -> i32 {
-        let mut previous_starting_node = None;
-        let mut previous_node = None;
-        let mut next_node = None;
-        let mut node_value = -1;
-
-        match self.elements.get_mut(&key) {
-            None => {}
-            Some(node) => {
-                previous_node = node.prev_key;
-                next_node = node.next_key;
-
-                if self.starting_node != Some(key) {
-                    previous_starting_node = self.starting_node;
-                }
-
-                if let Some(ending_node) = self.ending_node {
-                    if ending_node == key && previous_node.is_some() {
-                        self.ending_node = node.prev_key;
-                    }
-                }
-
-                if node.next_key.is_some() {
-                    node.next_key = self.starting_node;
-                }
-                node.prev_key = None;
-                self.starting_node = Some(node.key);
-
-                node_value = node.value;
-            }
-        }
-
-        self.update_previous_and_next(previous_node, next_node);
-
-        if let Some(starting_node) = previous_starting_node {
-            let node = self.elements.get_mut(&starting_node).unwrap();
-            node.prev_key = Some(key)
-        }
-
-        node_value
-    }
-
-    fn update_previous_and_next(&mut self, previous_node: Option<i32>, next_node: Option<i32>) {
-        if previous_node.is_some() {
-            let node = self.elements.get_mut(&previous_node.unwrap()).unwrap();
-            node.next_key = next_node;
-
-            if let Some(next_node) = next_node {
-                let node = self.elements.get_mut(&next_node).unwrap();
-                node.prev_key = previous_node;
+        match self.remove(key) {
+            None => -1,
+            Some(val) => {
+                self.put_first(key, val);
+                val
             }
         }
     }
 
     fn put(&mut self, key: i32, value: i32) {
-        let mut previous_node = None;
-        let mut next_node = None;
+        self.remove(key);
+        self.put_first(key, value)
+    }
 
-        if let Some(node) = self.elements.get_mut(&key) {
-            node.value = value;
-            previous_node = node.prev_key;
-            next_node = node.next_key;
-            if node.prev_key.is_some() {
-                self.ending_node = node.prev_key;
+    fn put_first(&mut self, key: i32, value: i32) {
+        let mut lru_node = LRUCacheNode::new(key, value);
+        match &mut self.head {
+            None => {
+                self.head = Some(key);
+                self.tail = Some(key);
             }
-        } else {
-            let lru_node = LRUCacheNode {
-                key,
-                value,
-                prev_key: None,
-                next_key: self.starting_node,
-            };
-
-            self.elements.insert(key, lru_node);
-        }
-
-        self.update_previous_and_next(previous_node, next_node);
-
-        if let Some(starting_node) = self.starting_node {
-            let elem = self.elements.get_mut(&starting_node).unwrap();
-            elem.prev_key = Some(key);
-        }
-
-        self.starting_node = Some(key);
-
-        if self.elements.len() == 1 {
-            self.ending_node = Some(key);
-        }
-
-        if self.elements.len() > self.capacity {
-            let last_node = self.elements.remove(&self.ending_node.unwrap());
-            self.ending_node = last_node.unwrap().prev_key;
-
-            if let Some(end_node) = self.ending_node {
-                let node = self.elements.get_mut(&end_node).unwrap();
-                node.next_key = None;
+            Some(head_key) => {
+                let prev_head = self.map.get_mut(head_key).unwrap();
+                prev_head.prev = Some(lru_node.key);
+                lru_node.next = Some(*head_key);
+                *head_key = key;
             }
+        }
+        self.map.insert(key, lru_node);
+
+        if self.map.len() > self.capacity {
+            self.remove(self.tail.unwrap());
         }
     }
+
+    fn remove(&mut self, key: i32) -> Option<i32> {
+        let ret = self.map.remove(&key);
+
+        if let Some(node) = &ret {
+            if self.tail.unwrap() == key {
+                self.tail = node.prev;
+            }
+
+            if self.head.unwrap() == key {
+                self.head = node.next;
+            }
+
+            if let Some(prev_key) = node.prev {
+                let prev_node = self.map.get_mut(&prev_key).unwrap();
+                prev_node.next = node.next;
+            }
+
+            if let Some(next_key) = node.next {
+                let next_node = self.map.get_mut(&next_key).unwrap();
+                next_node.prev = node.prev;
+            }
+        }
+
+        ret.map(|node| node.value)
+    }
 }
+
+/**
+ * Your LRUCache object will be instantiated and called as such:
+ * let obj = LRUCache::new(capacity);
+ * let ret_1: i32 = obj.get(key);
+ * obj.put(key, value);
+ */
 
 #[cfg(test)]
 mod tests {

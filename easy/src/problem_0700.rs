@@ -19,6 +19,7 @@ impl TreeNode {
 struct Solution;
 
 use std::cell::RefCell;
+use std::cmp::Ordering;
 use std::rc::Rc;
 impl Solution {
     pub fn search_bst(
@@ -29,13 +30,13 @@ impl Solution {
             None => None,
             Some(root) => {
                 let node = root.borrow();
-                if val > node.val {
-                    Self::search_bst(node.right.clone(), val)
-                } else if node.val == val {
-                    drop(node);
-                    Some(root)
-                } else {
-                    Self::search_bst(node.left.clone(), val)
+                match val.cmp(&node.val) {
+                    Ordering::Less => Self::search_bst(node.right.clone(), val),
+                    Ordering::Equal => {
+                        drop(node);
+                        Some(root)
+                    }
+                    Ordering::Greater => Self::search_bst(node.left.clone(), val),
                 }
             }
         }
