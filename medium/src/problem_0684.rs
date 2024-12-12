@@ -5,7 +5,7 @@ struct Solution;
 impl Solution {
     pub fn find_redundant_connection(edges: Vec<Vec<i32>>) -> Vec<i32> {
         let mut ranks = vec![0; edges.len() + 1];
-        let mut parents: Vec<usize> = (0..=edges.len() + 1).into_iter().collect();
+        let mut parents: Vec<usize> = (0..=edges.len() + 1).collect();
         let mut last_false_edge = vec![];
 
         for edge in edges {

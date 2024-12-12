@@ -9,11 +9,11 @@ impl Solution {
         let m = grid.len();
         let n = grid[0].len();
 
-        for i in 0..m {
-            for j in 0..n {
-                if grid[i][j] == 1 {
+        for (i, line) in grid.iter_mut().enumerate() {
+            for (j, square) in line.iter_mut().enumerate() {
+                if *square == 1 {
                     fresh_oranges += 1;
-                } else if grid[i][j] == 2 {
+                } else if *square == 2 {
                     rotten_oranges.push_back((i, j));
                     fresh_oranges += 1;
                 }

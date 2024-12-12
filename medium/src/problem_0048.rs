@@ -14,11 +14,9 @@ impl Solution {
         }
 
         // Then swap columns
-        for i in 0..n {
+        for line in matrix.iter_mut() {
             for j in 0..(n / 2) {
-                let tmp = matrix[i][j];
-                matrix[i][j] = matrix[i][n - 1 - j];
-                matrix[i][n - 1 - j] = tmp;
+                line.swap(j, n - 1 - j);
             }
         }
     }

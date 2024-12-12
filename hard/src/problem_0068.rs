@@ -1,5 +1,3 @@
-use std::iter::repeat;
-
 struct Solution;
 
 impl Solution {
@@ -32,7 +30,7 @@ impl Solution {
     ) -> String {
         let mut new_words: Vec<String> = vec![];
 
-        words[..words.len() - 1].into_iter().for_each(|word| {
+        words[..words.len() - 1].iter().for_each(|word| {
             let mut new_word = word.clone();
             new_word.push(' ');
             new_words.push(new_word)
@@ -43,9 +41,7 @@ impl Solution {
         if is_last_line || words.len() == 1 {
             new_words.push(words.last().unwrap().clone());
 
-            let filled = repeat(' ')
-                .take((max_width - words_length) as usize)
-                .collect::<String>();
+            let filled = " ".repeat((max_width - words_length) as usize);
             new_words.push(filled);
         } else {
             let average_spaces = (max_width as usize - words_length as usize) / (words.len() - 1);
@@ -60,7 +56,7 @@ impl Solution {
                     remaining_space -= 1;
                 }
 
-                let spaces: String = repeat(' ').take(spaces_amount).collect();
+                let spaces: String = " ".repeat(spaces_amount);
                 word.push_str(&spaces)
             }
 

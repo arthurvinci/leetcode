@@ -11,10 +11,7 @@ impl Solution {
             } else {
                 same_int = 1;
             }
-
-            let tmp = nums[i];
-            nums[i] = nums[i - k];
-            nums[i - k] = tmp;
+            nums.swap(i, i - k);
 
             if same_int > 2 {
                 k += 1;

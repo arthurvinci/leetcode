@@ -31,7 +31,7 @@ impl Solution {
                 _ => unreachable!(),
             }
         }
-        if carry == true {
+        if carry {
             ans.push('1');
         }
         ans.chars().rev().collect()

@@ -2,8 +2,8 @@ struct Solution;
 
 impl Solution {
     pub fn int_to_roman(mut num: i32) -> String {
-        let values = vec![1000, 900, 500, 400, 100, 90, 50, 40, 10, 9, 5, 4, 1];
-        let roman_string = vec![
+        let values = [1000, 900, 500, 400, 100, 90, 50, 40, 10, 9, 5, 4, 1];
+        let roman_string = [
             "M", "CM", "D", "CD", "C", "XC", "L", "XL", "X", "IX", "V", "IV", "I",
         ];
 

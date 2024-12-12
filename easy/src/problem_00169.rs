@@ -8,12 +8,10 @@ impl Solution {
             if count == 0 {
                 majority_candidate = *num;
                 count = 1
+            } else if *num == majority_candidate {
+                count += 1;
             } else {
-                if *num == majority_candidate {
-                    count += 1;
-                } else {
-                    count -= 1;
-                }
+                count -= 1;
             }
         }
 

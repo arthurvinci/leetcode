@@ -49,10 +49,7 @@ impl Trie {
     }
 
     fn starts_with(&self, prefix: String) -> bool {
-        match self.get_node(prefix) {
-            None => false,
-            Some(_) => true,
-        }
+        self.get_node(prefix).is_some()
     }
 
     fn get_node(&self, word: String) -> Option<&TrieNode> {

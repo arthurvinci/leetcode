@@ -13,8 +13,8 @@ impl Solution {
                 Some(char) => char,
             };
 
-            for i in 1..chars.len() {
-                match chars[i].next() {
+            for chars in chars.iter_mut().skip(1) {
+                match chars.next() {
                     None => return prefix,
                     Some(ch) => {
                         if char != ch {

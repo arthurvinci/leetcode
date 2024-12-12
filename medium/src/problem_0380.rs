@@ -1,4 +1,5 @@
 use rand::Rng;
+use std::collections::hash_map::Entry;
 use std::collections::HashMap;
 
 struct RandomizedSet {
@@ -19,12 +20,12 @@ impl RandomizedSet {
     }
 
     fn insert(&mut self, val: i32) -> bool {
-        if self.indices.contains_key(&val) {
-            false
-        } else {
-            self.indices.insert(val, self.elements.len());
+        if let Entry::Vacant(e) = self.indices.entry(val) {
+            e.insert(self.elements.len());
             self.elements.push(val);
             true
+        } else {
+            false
         }
     }
 
@@ -33,9 +34,9 @@ impl RandomizedSet {
             None => false,
             Some(index) => {
                 self.elements[index] = *self.elements.last().unwrap();
-                self.indices
-                    .get_mut(&self.elements[index])
-                    .map(|old_index| *old_index = index);
+                if let Some(old_index) = self.indices.get_mut(&self.elements[index]) {
+                    *old_index = index;
+                }
 
                 self.elements.pop();
                 true

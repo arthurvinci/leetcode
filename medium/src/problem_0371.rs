@@ -6,7 +6,7 @@ impl Solution {
         let mut b = b;
         while b != 0 {
             let tmp_a = a;
-            a = a ^ b;
+            a ^= b;
             b = (tmp_a & b) << 1;
         }
 
