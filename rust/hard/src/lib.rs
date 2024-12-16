@@ -7,6 +7,7 @@ mod problem_0051;
 mod problem_0052;
 mod problem_0068;
 mod problem_0084;
+mod problem_0124;
 mod problem_0224;
 mod problem_0297;
 mod problem_0745;
