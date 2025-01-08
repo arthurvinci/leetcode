@@ -1,24 +1,7 @@
+use leetcode_commons::list_node::ListNode;
+
 struct Solution;
 
-#[derive(PartialEq, Eq, Clone, Debug)]
-pub struct ListNode {
-    pub val: i32,
-    pub next: Option<Box<ListNode>>,
-}
-
-impl ListNode {
-    #[inline]
-    fn new(val: i32) -> Self {
-        ListNode { next: None, val }
-    }
-
-    fn new_with_next(val: i32, next: ListNode) -> Self {
-        Self {
-            val,
-            next: Some(Box::new(next)),
-        }
-    }
-}
 impl Solution {
     pub fn reverse_between(
         head: Option<Box<ListNode>>,

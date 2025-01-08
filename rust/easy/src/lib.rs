@@ -57,5 +57,6 @@ mod problem_1929;
 mod problem_2373;
 mod problem_2558;
 mod problem_2696;
+mod problem_3042;
 mod problem_3158;
 mod problem_3264;

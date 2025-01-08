@@ -1,5 +1,6 @@
 [workspace]
 members = [
+    "commons",
     "easy",
     "medium",
     "hard"

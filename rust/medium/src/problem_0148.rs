@@ -1,22 +1,4 @@
-#[derive(PartialEq, Eq, Clone, Debug)]
-pub struct ListNode {
-    pub val: i32,
-    pub next: Option<Box<ListNode>>,
-}
-
-impl ListNode {
-    #[inline]
-    fn new(val: i32) -> Self {
-        ListNode { next: None, val }
-    }
-
-    fn with_next(val: i32, next: ListNode) -> Self {
-        ListNode {
-            next: Some(Box::new(next)),
-            val,
-        }
-    }
-}
+use leetcode_commons::list_node::ListNode;
 
 struct Solution;
 
@@ -85,9 +67,9 @@ mod test {
 
     #[test]
     fn test_1() {
-        let ret = Solution::sort_list(Some(Box::new(ListNode::with_next(
+        let ret = Solution::sort_list(Some(Box::new(ListNode::new_with_next(
             4,
-            ListNode::with_next(2, ListNode::with_next(1, ListNode::new(3))),
+            ListNode::new_with_next(2, ListNode::new_with_next(1, ListNode::new(3))),
         ))));
         println!("{:?}", ret);
     }
