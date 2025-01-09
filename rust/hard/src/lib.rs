@@ -2,6 +2,7 @@
 mod problem_0004;
 mod problem_0010;
 mod problem_0023;
+mod problem_0025;
 mod problem_0042;
 mod problem_0051;
 mod problem_0052;
