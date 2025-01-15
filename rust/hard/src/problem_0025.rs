@@ -22,7 +22,7 @@ impl Solution {
     }
 
     pub fn do_reverse(
-        mut head: Option<Box<ListNode>>,
+        head: Option<Box<ListNode>>,
         point_to: Option<Box<ListNode>>,
         acc: Option<Box<ListNode>>,
     ) -> Option<Box<ListNode>> {
