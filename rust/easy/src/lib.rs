@@ -52,6 +52,7 @@ mod problem_0704;
 mod problem_0705;
 mod problem_0706;
 mod problem_0724;
+mod problem_0872;
 mod problem_0876;
 mod problem_0933;
 mod problem_1046;

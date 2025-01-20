@@ -20,7 +20,7 @@ impl Solution {
                     lo = (lo - 1).abs();
                     hi += 1;
                 }
-                _ => unreachable!()
+                _ => unreachable!(),
             }
         }
         lo == 0
